@@ -1,0 +1,16 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow read access to all authenticated users
+    match /calls/{document=**} {
+      allow read: if request.auth != null;
+      // Only allow writes from service account (backend)
+      allow write: if false;
+    }
+    
+    match /metrics/{document=**} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+  }
+}
